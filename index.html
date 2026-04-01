@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #30363d; }
+    h1 { font-size: 24px; color: #58a6ff; }
+    .updated { font-size: 12px; color: #8b949e; }
+    .section { margin-bottom: 30px; }
+    .section h2 { font-size: 16px; margin-bottom: 15px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; }
+    .tasks { display: grid; gap: 10px; }
+    .task { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; }
+    .task.completed { opacity: 0.6; }
+    .task.completed .task-name { text-decoration: line-through; }
+    .status { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .status.completed { background: #3fb950; }
+    .status.pending { background: #f85149; }
+    .status.in-progress { background: #d29922; }
+    .task-name { flex: 1; }
+    .task-project { font-size: 12px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 12px; }
+    .priority { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+    .priority.high { background: #da3633; color: #fff; }
+    .priority.medium { background: #d29922; color: #000; }
+    .priority.low { background: #238636; color: #fff; }
+    .empty { text-align: center; color: #8b949e; padding: 40px; }
+    .stats { display: flex; gap: 20px; }
+    .stat { background: #161b22; padding: 15px 25px; border-radius: 6px; text-align: center; }
+    .stat-number { font-size: 28px; font-weight: bold; }
+    .stat-label { font-size: 12px; color: #8b949e; }
+    .loading { text-align: center; color: #8b949e; padding: 40px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>📋 Task Dashboard</h1>
+        <p class="updated">Last updated: <span id="lastUpdated">-</span></p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number" id="totalCount">-</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="completedCount">-</div>
+          <div class="stat-label">Done</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="pendingCount">-</div>
+          <div class="stat-label">Pending</div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="section">
+      <h2>🔴 In Progress</h2>
+      <div class="tasks" id="inProgress"></div>
+    </div>
+    
+    <div class="section">
+      <h2>🟡 Pending</h2>
+      <div class="tasks" id="pending"></div>
+    </div>
+    
+    <div class="section">
+      <h2>✅ Completed</h2>
+      <div class="tasks" id="completed"></div>
+    </div>
+  </div>
+
+  <script>
+    async function loadTasks() {
+      try {
+        const response = await fetch('tasks.json');
+        const data = await response.json();
+        
+        document.getElementById('lastUpdated').textContent = data.updated || new Date().toLocaleString();
+        
+        const inProgress = data.tasks.filter(t => t.status === 'in-progress' || t.status === 'in progress');
+        const pending = data.tasks.filter(t => t.status === 'pending');
+        const completed = data.tasks.filter(t => t.status === 'completed' || t.status === 'done');
+        
+        document.getElementById('totalCount').textContent = data.tasks.length;
+        document.getElementById('completedCount').textContent = completed.length;
+        document.getElementById('pendingCount').textContent = pending.length + inProgress.length;
+        
+        renderTasks('inProgress', inProgress);
+        renderTasks('pending', pending);
+        renderTasks('completed', completed);
+      } catch (e) {
+        document.body.innerHTML = '<div class="loading">Loading tasks.json...</div>';
+        setTimeout(loadTasks, 2000);
+      }
+    }
+    
+    function renderTasks(containerId, tasks) {
+      const container = document.getElementById(containerId);
+      if (tasks.length === 0) {
+        container.innerHTML = '<div class="empty">No tasks</div>';
+        return;
+      }
+      container.innerHTML = tasks.map(task => `
+        <div class="task ${task.status === 'completed' ? 'completed' : ''}">
+          <div class="status ${task.status === 'completed' ? 'completed' : task.status === 'in-progress' ? 'in-progress' : 'pending'}"></div>
+          <span class="task-name">${task.name}</span>
+          ${task.project ? `<span class="task-project">${task.project}</span>` : ''}
+          ${task.priority ? `<span class="priority ${task.priority}">${task.priority}</span>` : ''}
+        </div>
+      `).join('');
+    }
+    
+    loadTasks();
+  </script>
+</body>
+</html>
