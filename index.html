@@ -6,72 +6,100 @@
   <title>Task Dashboard</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; padding: 20px; }
-    .container { max-width: 900px; margin: 0 auto; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #30363d; }
-    h1 { font-size: 24px; color: #58a6ff; }
-    .updated { font-size: 12px; color: #8b949e; }
-    .section { margin-bottom: 30px; }
-    .section h2 { font-size: 16px; margin-bottom: 15px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; }
-    .tasks { display: grid; gap: 10px; }
-    .task { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; }
-    .task.completed { opacity: 0.6; }
-    .task.completed .task-name { text-decoration: line-through; }
-    .status { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .status.completed { background: #3fb950; }
-    .status.pending { background: #f85149; }
-    .status.in-progress { background: #d29922; }
-    .task-name { flex: 1; }
-    .task-project { font-size: 12px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 12px; }
-    .priority { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
-    .priority.high { background: #da3633; color: #fff; }
-    .priority.medium { background: #d29922; color: #000; }
-    .priority.low { background: #238636; color: #fff; }
-    .empty { text-align: center; color: #8b949e; padding: 40px; }
-    .stats { display: flex; gap: 20px; }
-    .stat { background: #161b22; padding: 15px 25px; border-radius: 6px; text-align: center; }
-    .stat-number { font-size: 28px; font-weight: bold; }
-    .stat-label { font-size: 12px; color: #8b949e; }
-    .loading { text-align: center; color: #8b949e; padding: 40px; }
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --text-secondary: #6c757d;
+      --border: #dee2e6;
+      --accent: #4a90d9;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --high: #dc3545;
+      --medium: #ffc107;
+      --low: #28a745;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    header { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
+    h1 { font-size: 28px; color: var(--accent); margin-bottom: 5px; }
+    .updated { font-size: 13px; color: var(--text-secondary); }
+    
+    /* Overview Stats */
+    .overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .stat-card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; }
+    .stat-number { font-size: 32px; font-weight: bold; }
+    .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 5px; }
+    .stat-card.total .stat-number { color: var(--accent); }
+    .stat-card.completed .stat-number { color: var(--success); }
+    .stat-card.pending .stat-number { color: var(--warning); }
+    .stat-card.urgent .stat-number { color: var(--danger); }
+    
+    /* Deadline Sections */
+    .deadline-section { margin-bottom: 30px; }
+    .deadline-section h2 { font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    .deadline-section h2.urgent { color: var(--danger); }
+    .deadline-section h2.soon { color: var(--warning); }
+    .tasks-grid { display: grid; gap: 10px; }
+    
+    /* Project Section */
+    .project-section { margin-bottom: 35px; }
+    .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .project-name { font-size: 20px; font-weight: 600; }
+    .project-stats { font-size: 13px; color: var(--text-secondary); }
+    .project-stats span { margin-left: 15px; }
+    .project-stats .done { color: var(--success); }
+    .project-stats .pending { color: var(--warning); }
+    
+    /* Task Card */
+    .task { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 15px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .task.completed { opacity: 0.7; background: #f8f9fa; }
+    .task.completed .task-name { text-decoration: line-through; color: var(--text-secondary); }
+    .task-urgent { border-left: 4px solid var(--danger); }
+    .task-soon { border-left: 4px solid var(--warning); }
+    
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.completed { background: var(--success); }
+    .status-dot.pending { background: var(--warning); }
+    .status-dot.in-progress { background: var(--accent); }
+    
+    .task-name { flex: 1; font-weight: 500; }
+    .task-deadline { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
+    .task-deadline.overdue { color: var(--danger); font-weight: 600; }
+    .task-priority { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+    .task-priority.high { background: var(--high); color: #fff; }
+    .task-priority.medium { background: var(--medium); color: #000; }
+    .task-priority.low { background: var(--low); color: #fff; }
+    
+    .empty { text-align: center; color: var(--text-secondary); padding: 30px; background: var(--card-bg); border-radius: 8px; }
+    .loading { text-align: center; color: var(--text-secondary); padding: 40px; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <div>
-        <h1>📋 Task Dashboard</h1>
-        <p class="updated">Last updated: <span id="lastUpdated">-</span></p>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-number" id="totalCount">-</div>
-          <div class="stat-label">Total</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number" id="completedCount">-</div>
-          <div class="stat-label">Done</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number" id="pendingCount">-</div>
-          <div class="stat-label">Pending</div>
-        </div>
-      </div>
+      <h1>📋 Task Dashboard</h1>
+      <p class="updated">Last updated: <span id="lastUpdated">-</span></p>
     </header>
     
-    <div class="section">
-      <h2>🔴 In Progress</h2>
-      <div class="tasks" id="inProgress"></div>
+    <!-- Overview Stats -->
+    <div class="overview" id="overview"></div>
+    
+    <!-- This Week Deadline -->
+    <div class="deadline-section">
+      <h2 class="urgent">⚠️ Deadline This Week</h2>
+      <div class="tasks-grid" id="thisWeek"></div>
     </div>
     
-    <div class="section">
-      <h2>🟡 Pending</h2>
-      <div class="tasks" id="pending"></div>
+    <!-- Next Week Deadline -->
+    <div class="deadline-section">
+      <h2 class="soon">📅 Deadline Next Week</h2>
+      <div class="tasks-grid" id="nextWeek"></div>
     </div>
     
-    <div class="section">
-      <h2>✅ Completed</h2>
-      <div class="tasks" id="completed"></div>
-    </div>
+    <!-- Projects -->
+    <div id="projects"></div>
   </div>
 
   <script>
@@ -80,39 +108,109 @@
         const response = await fetch('tasks.json');
         const data = await response.json();
         
-        document.getElementById('lastUpdated').textContent = data.updated || new Date().toLocaleString();
+        document.getElementById('lastUpdated').textContent = data.updated || new Date().toLocaleDateString();
         
-        const inProgress = data.tasks.filter(t => t.status === 'in-progress' || t.status === 'in progress');
-        const pending = data.tasks.filter(t => t.status === 'pending');
-        const completed = data.tasks.filter(t => t.status === 'completed' || t.status === 'done');
+        const now = new Date();
+        const thisWeekEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        const nextWeekEnd = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
         
-        document.getElementById('totalCount').textContent = data.tasks.length;
-        document.getElementById('completedCount').textContent = completed.length;
-        document.getElementById('pendingCount').textContent = pending.length + inProgress.length;
+        const completed = data.tasks.filter(t => t.status === 'completed');
+        const pending = data.tasks.filter(t => t.status !== 'completed');
         
-        renderTasks('inProgress', inProgress);
-        renderTasks('pending', pending);
-        renderTasks('completed', completed);
+        // Filter by deadline
+        const thisWeek = pending.filter(t => {
+          if (!t.deadline) return false;
+          const d = new Date(t.deadline);
+          return d >= now && d <= thisWeekEnd;
+        });
+        
+        const nextWeek = pending.filter(t => {
+          if (!t.deadline) return false;
+          const d = new Date(t.deadline);
+          return d > thisWeekEnd && d <= nextWeekEnd;
+        });
+        
+        // Overview stats
+        document.getElementById('overview').innerHTML = `
+          <div class="stat-card total">
+            <div class="stat-number">${data.tasks.length}</div>
+            <div class="stat-label">Total Tasks</div>
+          </div>
+          <div class="stat-card completed">
+            <div class="stat-number">${completed.length}</div>
+            <div class="stat-label">Completed</div>
+          </div>
+          <div class="stat-card pending">
+            <div class="stat-number">${pending.length}</div>
+            <div class="stat-label">Pending</div>
+          </div>
+          <div class="stat-card urgent">
+            <div class="stat-number">${thisWeek.length}</div>
+            <div class="stat-label">This Week</div>
+          </div>
+        `;
+        
+        // This week
+        document.getElementById('thisWeek').innerHTML = thisWeek.length 
+          ? thisWeek.map(t => renderTask(t, 'urgent')).join('')
+          : '<div class="empty">No tasks due this week 🎉</div>';
+        
+        // Next week
+        document.getElementById('nextWeek').innerHTML = nextWeek.length
+          ? nextWeek.map(t => renderTask(t, 'soon')).join('')
+          : '<div class="empty">No tasks due next week</div>';
+        
+        // Group by project
+        const projects = {};
+        data.tasks.forEach(t => {
+          const p = t.project || 'Other';
+          if (!projects[p]) projects[p] = [];
+          projects[p].push(t);
+        });
+        
+        let projectsHtml = '';
+        Object.keys(projects).sort().forEach(p => {
+          const tasks = projects[p];
+          const done = tasks.filter(t => t.status === 'completed').length;
+          const pend = tasks.filter(t => t.status !== 'completed').length;
+          
+          projectsHtml += `
+            <div class="project-section">
+              <div class="project-header">
+                <div class="project-name">${p}</div>
+                <div class="project-stats">
+                  <span class="done">✅ ${done} done</span>
+                  <span class="pending">🟡 ${pend} pending</span>
+                </div>
+              </div>
+              <div class="tasks-grid">
+                ${tasks.map(t => renderTask(t)).join('')}
+              </div>
+            </div>
+          `;
+        });
+        
+        document.getElementById('projects').innerHTML = projectsHtml;
+        
       } catch (e) {
         document.body.innerHTML = '<div class="loading">Loading tasks.json...</div>';
         setTimeout(loadTasks, 2000);
       }
     }
     
-    function renderTasks(containerId, tasks) {
-      const container = document.getElementById(containerId);
-      if (tasks.length === 0) {
-        container.innerHTML = '<div class="empty">No tasks</div>';
-        return;
-      }
-      container.innerHTML = tasks.map(task => `
-        <div class="task ${task.status === 'completed' ? 'completed' : ''}">
-          <div class="status ${task.status === 'completed' ? 'completed' : task.status === 'in-progress' ? 'in-progress' : 'pending'}"></div>
+    function renderTask(task, urgency = '') {
+      const isCompleted = task.status === 'completed';
+      const deadlineClass = task.deadline && !isCompleted ? '' : '';
+      const deadline = task.deadline || '-';
+      
+      return `
+        <div class="task ${isCompleted ? 'completed' : ''} task-${urgency}">
+          <div class="status-dot ${task.status}"></div>
           <span class="task-name">${task.name}</span>
-          ${task.project ? `<span class="task-project">${task.project}</span>` : ''}
-          ${task.priority ? `<span class="priority ${task.priority}">${task.priority}</span>` : ''}
+          <span class="task-deadline ${deadlineClass}">${deadline}</span>
+          ${task.priority && task.priority !== 'medium' ? `<span class="task-priority ${task.priority}">${task.priority}</span>` : ''}
         </div>
-      `).join('');
+      `;
     }
     
     loadTasks();
