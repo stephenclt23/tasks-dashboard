@@ -2,118 +2,137 @@
   "updated": "2026-04-01",
   "tasks": [
     {
-      "name": "2026-03-30",
+      "name": "DOE - short stop",
       "project": "AT Failure",
-      "status": "completed",
-      "priority": "-"
-    },
-    {
-      "name": "2026-03-30",
-      "project": "AT Failure",
-      "status": "completed",
-      "priority": "-"
-    },
-    {
-      "name": "2026-03-30",
-      "project": "AT Failure",
-      "status": "completed",
-      "priority": "-"
-    },
-    {
-      "name": "2026-03-30",
-      "project": "AT Failure",
-      "status": "pending",
-      "priority": "-"
-    },
-    {
-      "name": "2026-03-30",
-      "project": "AT Failure",
-      "status": "pending",
-      "priority": "-"
-    },
-    {
-      "name": "2026-03-17",
-      "project": "Two Miss Beacon",
-      "status": "completed",
-      "priority": "high"
-    },
-    {
-      "name": "2026-03-17",
-      "project": "Two Miss Beacon",
-      "status": "completed",
-      "priority": "high"
-    },
-    {
-      "name": "2026-03-17",
-      "project": "Two Miss Beacon",
+      "deadline": "2026-03-30",
       "status": "completed",
       "priority": "medium"
     },
     {
-      "name": "2026-03-30",
-      "project": "Two Miss Beacon",
-      "status": "completed",
-      "priority": "high"
-    },
-    {
-      "name": "2026-03-20",
-      "project": "Two Miss Beacon",
-      "status": "completed",
-      "priority": "high"
-    },
-    {
-      "name": "2026-03-30",
-      "project": "Two Miss Beacon",
+      "name": "DOE - no DER",
+      "project": "AT Failure",
+      "deadline": "2026-03-30",
       "status": "completed",
       "priority": "medium"
     },
     {
-      "name": "2026-04-30",
-      "project": "Two Miss Beacon",
+      "name": "DOE - overrun",
+      "project": "AT Failure",
+      "deadline": "2026-03-30",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "name": "Popup time support",
+      "project": "AT Failure",
+      "deadline": "2026-03-30",
       "status": "pending",
       "priority": "medium"
     },
     {
-      "name": "2026-03-30",
+      "name": "OCC data download",
+      "project": "AT Failure",
+      "deadline": "2026-03-30",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "name": "Event Detection",
       "project": "Two Miss Beacon",
+      "deadline": "2026-03-17",
       "status": "completed",
-      "priority": "-"
+      "priority": "high"
     },
     {
-      "name": "2026-03-27",
+      "name": "Rights for users",
       "project": "Two Miss Beacon",
+      "deadline": "2026-03-17",
       "status": "completed",
-      "priority": "-"
+      "priority": "high"
     },
     {
-      "name": "2026-03-31",
+      "name": "OCC popup windows interface and icon design",
       "project": "Two Miss Beacon",
+      "deadline": "2026-03-17",
       "status": "completed",
-      "priority": "-"
+      "priority": "medium"
     },
     {
-      "name": "2026-03-30",
+      "name": "Event Result Page",
       "project": "Two Miss Beacon",
-      "status": "pending",
-      "priority": "-"
+      "deadline": "2026-03-30",
+      "status": "completed",
+      "priority": "high"
     },
     {
-      "name": "2026-03-30",
+      "name": "History Case Testing Engine",
       "project": "Two Miss Beacon",
-      "status": "pending",
-      "priority": "-"
+      "deadline": "2026-03-20",
+      "status": "completed",
+      "priority": "high"
     },
     {
-      "name": "2026-03-30",
+      "name": "OCC page",
       "project": "Two Miss Beacon",
-      "status": "pending",
-      "priority": "-"
+      "deadline": "2026-03-30",
+      "status": "completed",
+      "priority": "medium"
     },
     {
-      "name": "2026-03-27",
+      "name": "Weekly review (After 1st Deadline; monthly)",
       "project": "Two Miss Beacon",
+      "deadline": "2026-04-30",
       "status": "pending",
-      "priority": "-"
+      "priority": "medium"
+    },
+    {
+      "name": "Configuration setting on admin MMI",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-30",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "name": "Depot Track handling",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-27",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "name": "Track skip list",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-31",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "name": "Track length update",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-30",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "name": "Popup time support",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-30",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "name": "OCC data download",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-30",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "name": "apply doe offset",
+      "project": "Two Miss Beacon",
+      "deadline": "2026-03-27",
+      "status": "pending",
+      "priority": "medium"
     }
   ]
 }
